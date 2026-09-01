@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>En Voz Propia — Código Awicha</title>
+<meta name="description" content="Reflexiones personales sobre tecnologa, cultura y lo que nos toca.">
+<link rel="icon" type="image/png" href="assets/iso-color.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--morado:#c084fc;--morado-hondo:#9d5be0;--turquesa:#2dd4bf;--tinta:#1b1626;--tinta-soft:#241d33;--texto:#f2edfb;--muted:#a99cc4;--linea:#3a2f52}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--tinta);color:var(--texto);font-family:'Poppins',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;width:100%}
+a{color:inherit}
+.topbar{background:#140f1e;border-bottom:1px solid var(--linea);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--muted);padding:11px 0}
+.topbar .in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar b{color:var(--turquesa);font-weight:700}
+nav{border-bottom:1px solid var(--linea);background:rgba(27,22,38,.92)}
+nav .in{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+nav .logo img{height:54px;width:auto;display:block}
+.menu{display:flex;gap:24px;list-style:none;font-size:14px;font-weight:500;flex-wrap:wrap}
+.menu a{text-decoration:none;color:var(--muted);transition:color .2s}
+.menu a:hover{color:var(--turquesa)}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:80px 0}
+.const{text-align:center;max-width:580px;margin:0 auto}
+.const .n{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.14em;color:var(--morado);font-weight:700;margin-bottom:20px}
+.const h1{font-family:'Orbitron',sans-serif;font-size:clamp(28px,5.5vw,48px);font-weight:900;line-height:1.12;margin-bottom:22px}
+.const .desc{font-size:19px;color:var(--muted)}
+.const .badge{display:inline-block;margin:30px 0 26px;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.08em;color:var(--morado);border:1px solid var(--morado);border-radius:24px;padding:10px 22px}
+.const .prompt{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--muted);margin-bottom:34px}
+.const .prompt .cur{color:var(--turquesa);animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.backhome{display:inline-block;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--turquesa);text-decoration:none;border:1px solid var(--turquesa);padding:12px 22px;border-radius:24px}
+.backhome:hover{background:var(--turquesa);color:var(--tinta)}
+footer{background:#140f1e;border-top:1px solid var(--linea);padding:40px 0}
+footer .in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer .fLogo img{height:64px;width:auto;margin-bottom:8px}
+footer p{color:var(--muted);font-size:13px}
+footer .social{display:flex;gap:18px;font-size:14px}
+footer .social a{color:var(--turquesa);text-decoration:none;font-weight:500}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="in"><span>awicha@codigo:~$ <b>dos saberes, una mirada</b></span><span>La Paz &middot; Bolivia</span></div></div>
+<nav><div class="in">
+<a href="index.html" class="logo"><img src="assets/logo-blanco.png" alt="Código Awicha"></a>
+<ul class="menu"><li><a href="index.html">Inicio</a></li><li><a href="index.html#secciones">Secciones</a></li><li><a href="index.html#blog">Blog</a></li><li><a href="quien.html">Quién está detrás</a></li></ul>
+</div></nav>
+<main><div class="wrap"><div class="const">
+<div class="n">01 — EN VOZ PROPIA</div>
+<h1>Reflexiones personales sobre tecnolog&iacute;a</h1>
+<p class="desc">Reflexiones personales sobre tecnolog&iacute;a, cultura y lo que nos toca.</p>
+<div class="badge">En construcción</div>
+<p class="prompt">awicha@codigo:~$ preparando contenido<span class="cur">_</span></p>
+<div><a href="index.html" class="backhome">← Volver al inicio</a></div>
+</div></div></main>
+<footer><div class="in">
+<div><div class="fLogo"><img src="assets/logo-blanco.png" alt="Código Awicha"></div><p>Detrás está Camilo Arratia Toledo · La Paz, Bolivia</p></div>
+<div class="social"><a href="https://www.instagram.com/codigoawicha" target="_blank">Instagram</a><a href="https://www.tiktok.com/@codigoawicha" target="_blank">TikTok</a></div>
+</div></footer>
+</body>
+</html>

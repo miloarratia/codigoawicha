@@ -46,8 +46,8 @@ nav .logo img{height:54px;width:auto;display:block}
 .secs{padding:70px 0 20px}
 .secs .kick{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.12em;color:var(--muted);margin-bottom:30px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{background:var(--tinta-soft);border:1px solid var(--linea);border-top:3px solid var(--acc);border-radius:8px;padding:30px 26px;display:flex;flex-direction:column;gap:14px;transition:transform .18s}
-.card:hover{transform:translateY(-4px)}
+.card{text-decoration:none;color:inherit;background:var(--tinta-soft);border:1px solid var(--linea);border-top:3px solid var(--acc);border-radius:8px;padding:30px 26px;display:flex;flex-direction:column;gap:14px;transition:transform .18s}
+.card:hover{transform:translateY(-4px);border-color:var(--acc)}
 .card .n{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.1em;color:var(--acc);font-weight:700}
 .card h3{font-size:22px;font-weight:600;line-height:1.2}
 .card p{color:var(--muted);font-size:15px}
@@ -80,7 +80,7 @@ footer .social a{color:var(--turquesa);text-decoration:none;font-weight:500}
 <div class="topbar"><div class="wrap"><span>awicha@codigo:~$ <b>dos saberes, una mirada</b></span><span>La Paz &middot; Bolivia</span></div></div>
 <nav><div class="wrap">
 <a href="#inicio" class="logo"><img src="assets/logo-blanco.png" alt="Código Awicha"></a>
-<ul class="menu"><li><a href="#inicio">Inicio</a></li><li><a href="#secciones">Secciones</a></li><li><a href="#blog">Blog</a></li><li><a href="#quien">Qui&eacute;n est&aacute; detr&aacute;s</a></li></ul>
+<ul class="menu"><li><a href="#inicio">Inicio</a></li><li><a href="#secciones">Secciones</a></li><li><a href="#blog">Blog</a></li><li><a href="quien.html">Qui&eacute;n est&aacute; detr&aacute;s</a></li></ul>
 </div></nav>
 <header class="hero" id="inicio"><div class="bgpattern"></div><div class="wrap">
 <p class="eyebrow">// TECNOLOG&Iacute;A E IA DESDE EL SABER POPULAR</p>
@@ -89,9 +89,9 @@ footer .social a{color:var(--turquesa);text-decoration:none;font-weight:500}
 </div></header>
 <section class="secs" id="secciones"><div class="wrap"><p class="kick">// LO QUE VAS A ENCONTRAR</p>
 <div class="grid">
-<article class="card c1"><span class="n">01 &mdash; ACTUALIDAD</span><h3>Noticias con mirada cr&iacute;tica</h3><p>Lo que pasa en la tecnolog&iacute;a y la IA, contado y analizado con criterio. Qu&eacute; hay detr&aacute;s de cada titular.</p></article>
-<article class="card c2"><span class="n">02 &mdash; OPORTUNIDADES</span><h3>La tecnolog&iacute;a como puente</h3><p>Becas, convocatorias, programas y recursos para formarse, buscarse y crecer. Lo pr&aacute;ctico y generoso.</p></article>
-<article class="card c3"><span class="n">03 &mdash; ALFABETIZACI&Oacute;N</span><h3>Tips digitales para todos</h3><p>Herramientas y habilidades explicadas en lenguaje claro. El saber que la awicha pasar&iacute;a de mano en mano.</p></article>
+<a class="card c1" href="voz-propia.html"><span class="n">01 &mdash; EN VOZ PROPIA</span><h3>Reflexiones personales</h3><p>Reflexiones personales sobre tecnolog&iacute;a, cultura y lo que nos toca.</p></a>
+<a class="card c2" href="actualidad.html"><span class="n">02 &mdash; ACTUALIDAD</span><h3>Actualidad tecnol&oacute;gica</h3><p>Noticias de tecnolog&iacute;a e IA, contadas de manera cr&iacute;tica.</p></a>
+<a class="card c3" href="dice-mi-awicha.html"><span class="n">03 &mdash; DICE MI AWICHA</span><h3>Dice mi awicha</h3><p>Consejos digitales con sabidur&iacute;a de siempre.</p></a>
 </div></div></section>
 <section class="feed" id="blog"><div class="wrap"><div class="head"><h2>&Uacute;ltimo del blog</h2><span>publicaciones recientes</span></div>
 <article class="post"><div class="meta">01 SEP 2026<span class="cat c1">Bienvenida</span></div>
