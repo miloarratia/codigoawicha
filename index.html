@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Código Awicha — Dos saberes, una mirada</title>
+<meta name="description" content="Tecnología e inteligencia artificial pensadas desde el saber popular. Noticias con mirada crítica, oportunidades y alfabetización digital. La Paz, Bolivia.">
+<link rel="icon" type="image/png" href="assets/iso-color.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --morado:#c084fc;
+  --morado-hondo:#9d5be0;
+  --turquesa:#2dd4bf;
+  --turquesa-hondo:#14a897;
+  --tinta:#1b1626;
+  --tinta-soft:#241d33;
+  --texto:#f2edfb;
+  --muted:#a99cc4;
+  --linea:#3a2f52;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--tinta);color:var(--texto);font-family:'Poppins',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+.topbar{background:#140f1e;border-bottom:1px solid var(--linea);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--muted);padding:11px 0}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar b{color:var(--turquesa);font-weight:700}
+nav{border-bottom:1px solid var(--linea);position:sticky;top:0;background:rgba(27,22,38,.92);backdrop-filter:blur(8px);z-index:10}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px;gap:16px;flex-wrap:wrap}
+nav .logo img{height:54px;width:auto;display:block}
+.menu{display:flex;gap:24px;list-style:none;font-size:14px;font-weight:500;flex-wrap:wrap}
+.menu a{text-decoration:none;color:var(--muted);transition:color .2s}
+.menu a:hover{color:var(--turquesa)}
+.hero{position:relative;padding:76px 0 66px;border-bottom:1px solid var(--linea);overflow:hidden}
+.hero .bgpattern{position:absolute;inset:0;background:url('assets/circuito-andino.png') center/cover no-repeat;opacity:.22;pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(27,22,38,.4),var(--tinta));pointer-events:none}
+.hero .wrap{position:relative;z-index:2}
+.hero .heroLogo img{max-width:min(560px,90%);height:auto;display:block;margin-bottom:8px}
+.hero .eyebrow{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.14em;color:var(--turquesa);margin-bottom:26px}
+.hero .intro{margin-top:22px;font-size:clamp(17px,2.3vw,21px);color:var(--texto);max-width:620px}
+.hero .intro b{color:var(--morado);font-weight:600}
+.secs{padding:70px 0 20px}
+.secs .kick{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.12em;color:var(--muted);margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--tinta-soft);border:1px solid var(--linea);border-top:3px solid var(--acc);border-radius:8px;padding:30px 26px;display:flex;flex-direction:column;gap:14px;transition:transform .18s}
+.card:hover{transform:translateY(-4px)}
+.card .n{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.1em;color:var(--acc);font-weight:700}
+.card h3{font-size:22px;font-weight:600;line-height:1.2}
+.card p{color:var(--muted);font-size:15px}
+.card.c1{--acc:var(--morado)}
+.card.c2{--acc:var(--turquesa)}
+.card.c3{--acc:var(--morado-hondo)}
+.feed{padding:66px 0 84px}
+.feed .head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--linea);padding-bottom:16px;margin-bottom:6px}
+.feed .head h2{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:700}
+.feed .head span{font-family:'Orbitron',sans-serif;font-size:12px;color:var(--muted);letter-spacing:.08em}
+.post{display:grid;grid-template-columns:150px 1fr;gap:26px;padding:30px 0;border-bottom:1px solid var(--linea);align-items:start}
+.post .meta{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.post .meta .cat{display:inline-block;margin-top:8px;font-weight:700;padding:3px 9px;border-radius:20px;font-size:10px}
+.post .meta .cat.c1{color:var(--morado);border:1px solid var(--morado)}
+.post .meta .cat.c2{color:var(--turquesa);border:1px solid var(--turquesa)}
+.post h3{font-size:22px;font-weight:600;line-height:1.25;margin-bottom:8px}
+.post h3 a{text-decoration:none}
+.post h3 a:hover{color:var(--turquesa)}
+.post p{color:var(--muted);font-size:15px}
+footer{background:#140f1e;border-top:1px solid var(--linea);padding:46px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer .fLogo img{height:80px;width:auto;margin-bottom:10px}
+footer p{color:var(--muted);font-size:13px}
+footer .social{display:flex;gap:18px;font-size:14px}
+footer .social a{color:var(--turquesa);text-decoration:none;font-weight:500}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.post{grid-template-columns:1fr;gap:10px}.hero{padding:52px 0 44px}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap"><span>awicha@codigo:~$ <b>dos saberes, una mirada</b></span><span>La Paz &middot; Bolivia</span></div></div>
+<nav><div class="wrap">
+<a href="#inicio" class="logo"><img src="assets/logo-blanco.png" alt="Código Awicha"></a>
+<ul class="menu"><li><a href="#inicio">Inicio</a></li><li><a href="#secciones">Secciones</a></li><li><a href="#blog">Blog</a></li><li><a href="#quien">Qui&eacute;n est&aacute; detr&aacute;s</a></li></ul>
+</div></nav>
+<header class="hero" id="inicio"><div class="bgpattern"></div><div class="wrap">
+<p class="eyebrow">// TECNOLOG&Iacute;A E IA DESDE EL SABER POPULAR</p>
+<div class="heroLogo"><img src="assets/logo-color.png" alt="C&oacute;digo Awicha — Dos saberes, una mirada"></div>
+<p class="intro">Donde lo antiguo y lo sabio conversa con lo digital. Pensamos la inteligencia artificial y la tecnolog&iacute;a desde lo nuestro. <b>Sin miedo, con criterio.</b></p>
+</div></header>
+<section class="secs" id="secciones"><div class="wrap"><p class="kick">// LO QUE VAS A ENCONTRAR</p>
+<div class="grid">
+<article class="card c1"><span class="n">01 &mdash; ACTUALIDAD</span><h3>Noticias con mirada cr&iacute;tica</h3><p>Lo que pasa en la tecnolog&iacute;a y la IA, contado y analizado con criterio. Qu&eacute; hay detr&aacute;s de cada titular.</p></article>
+<article class="card c2"><span class="n">02 &mdash; OPORTUNIDADES</span><h3>La tecnolog&iacute;a como puente</h3><p>Becas, convocatorias, programas y recursos para formarse, buscarse y crecer. Lo pr&aacute;ctico y generoso.</p></article>
+<article class="card c3"><span class="n">03 &mdash; ALFABETIZACI&Oacute;N</span><h3>Tips digitales para todos</h3><p>Herramientas y habilidades explicadas en lenguaje claro. El saber que la awicha pasar&iacute;a de mano en mano.</p></article>
+</div></div></section>
+<section class="feed" id="blog"><div class="wrap"><div class="head"><h2>&Uacute;ltimo del blog</h2><span>publicaciones recientes</span></div>
+<article class="post"><div class="meta">PR&Oacute;XIMAMENTE<span class="cat c2">En construcci&oacute;n</span></div>
+<div><h3><a href="#">Ac&aacute; van a vivir los art&iacute;culos de C&oacute;digo Awicha</a></h3>
+<p>El blog es el tronco: el pensamiento largo del que salen las piezas para redes. Pronto vas a encontrar ac&aacute; los primeros textos, con la misma voz cercana y cr&iacute;tica de siempre.</p></div></article>
+</div></section>
+<footer id="quien"><div class="wrap">
+<div><div class="fLogo"><img src="assets/logo-blanco.png" alt="C&oacute;digo Awicha"></div><p>Detr&aacute;s est&aacute; Camilo Arratia Toledo &middot; La Paz, Bolivia</p></div>
+<div class="social"><a href="https://www.instagram.com/codigoawicha" target="_blank">Instagram</a><a href="https://www.tiktok.com/@codigoawicha" target="_blank">TikTok</a></div>
+</div></footer>
+</body>
+</html>
