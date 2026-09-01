@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dos códigos en mi vida — Código Awicha</title>
+<meta name="description" content="La historia detrás de Código Awicha: un sociólogo que empezó en informática, y por qué el saber antiguo y el saber nuevo nunca fueron dos mundos separados.">
+<link rel="icon" type="image/png" href="assets/iso-color.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--morado:#c084fc;--morado-hondo:#9d5be0;--turquesa:#2dd4bf;--tinta:#1b1626;--tinta-soft:#241d33;--texto:#f2edfb;--muted:#a99cc4;--linea:#3a2f52}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--tinta);color:var(--texto);font-family:'Poppins',system-ui,sans-serif;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:700px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+.topbar{background:#140f1e;border-bottom:1px solid var(--linea);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--muted);padding:11px 0}
+.topbar .in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar b{color:var(--turquesa);font-weight:700}
+nav{border-bottom:1px solid var(--linea);position:sticky;top:0;background:rgba(27,22,38,.92);backdrop-filter:blur(8px);z-index:10}
+nav .in{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+nav .logo img{height:54px;width:auto;display:block}
+.menu{display:flex;gap:24px;list-style:none;font-size:14px;font-weight:500;flex-wrap:wrap}
+.menu a{text-decoration:none;color:var(--muted);transition:color .2s}
+.menu a:hover{color:var(--turquesa)}
+.arthead{padding:66px 0 34px;border-bottom:1px solid var(--linea)}
+.arthead .cat{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.1em;color:var(--turquesa);font-weight:700}
+.arthead h1{font-family:'Orbitron',sans-serif;font-size:clamp(30px,5.5vw,48px);font-weight:900;line-height:1.08;margin:20px 0 20px}
+.arthead .meta{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--muted)}
+article{padding:46px 0 10px;font-size:18px}
+article p{margin-bottom:26px;color:#e7ddf6}
+article p:first-child::first-letter{font-family:'Orbitron',sans-serif;font-size:58px;font-weight:900;color:var(--morado);float:left;line-height:.8;margin:6px 14px 0 0}
+article strong{color:#fff;font-weight:600}
+.cierre{margin-top:38px;padding-top:26px;border-top:1px solid var(--linea);font-family:'Orbitron',sans-serif;color:var(--morado);letter-spacing:.06em;font-size:15px;line-height:1.7}
+.cierre span{color:var(--turquesa)}
+.backhome{display:inline-block;margin:38px 0 64px;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--turquesa);text-decoration:none;border:1px solid var(--turquesa);padding:12px 20px;border-radius:24px}
+.backhome:hover{background:var(--turquesa);color:var(--tinta)}
+footer{background:#140f1e;border-top:1px solid var(--linea);padding:44px 0}
+footer .in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer .fLogo img{height:74px;width:auto;margin-bottom:10px}
+footer p{color:var(--muted);font-size:13px}
+footer .social{display:flex;gap:18px;font-size:14px}
+footer .social a{color:var(--turquesa);text-decoration:none;font-weight:500}
+@media(max-width:760px){.arthead{padding:46px 0 26px}article{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="in"><span>awicha@codigo:~$ <b>dos saberes, una mirada</b></span><span>La Paz &middot; Bolivia</span></div></div>
+<nav><div class="in">
+<a href="index.html" class="logo"><img src="assets/logo-blanco.png" alt="C&oacute;digo Awicha"></a>
+<ul class="menu"><li><a href="index.html">Inicio</a></li><li><a href="index.html#secciones">Secciones</a></li><li><a href="index.html#blog">Blog</a></li></ul>
+</div></nav>
+
+<header class="arthead"><div class="wrap">
+<span class="cat">BIENVENIDA</span>
+<h1>Dos c&oacute;digos en mi vida</h1>
+<p class="meta">Por Camilo Arratia Toledo &middot; La Paz, Bolivia</p>
+</div></header>
+
+<article><div class="wrap">
+<p>Toda mi vida estuve cerca de la tecnolog&iacute;a. Cuando en mi casa no sobraba nada, mi pap&aacute; igual buscaba la forma de darme acceso a ella. Recuerdo esas computadoras enormes que ve&iacute;a desde lejos, sin entender muy bien c&oacute;mo funcionaban. Me fascinaban los disquetes apilados y yo trataba de entender qu&eacute; hac&iacute;a mi pap&aacute; con ellos, c&oacute;mo era posible que toda esa informaci&oacute;n estuviera ah&iacute; dentro.</p>
+
+<p>Con el tiempo, mucho m&aacute;s r&aacute;pido de lo que parec&iacute;a, todo empez&oacute; a cambiar. Los disquetes desaparecieron y llegaron las famosas flash memory. Recuerdo perfectamente cuando mi pap&aacute; me regal&oacute; una de 128 MB. Hoy parece rid&iacute;culo, pero en ese momento era una maravilla. En mi colegio era casi una celebridad por tenerla. Incluso mi profesor de computaci&oacute;n me pidi&oacute; que le ense&ntilde;ara a usarla. Yo me sent&iacute;a importante. La tecnolog&iacute;a me hac&iacute;a sentir importante.</p>
+
+<p>Pero mientras ese mundo avanzaba a toda velocidad, en mi casa conviv&iacute;amos con otro completamente distinto. Segu&iacute;amos challando. Bail&aacute;bamos. Viaj&aacute;bamos al pueblo, a Santiago de Ojje y Llojpaya, de donde vienen mis abuelos. All&aacute; no importaba cu&aacute;nto almacenamiento ten&iacute;a una flash memory. Hab&iacute;a otras cosas que aprender: comer en apthapi, agradecer a la tierra, encontrarse con la familia, repetir tradiciones, escuchar historias. Eran dos mundos que, para m&iacute;, no parec&iacute;an tener mucho que ver. Y, siendo joven, creo que pensaba que uno era lo moderno y el otro simplemente lo nuestro.</p>
+
+<p>Con los a&ntilde;os entend&iacute; algo que entonces no pod&iacute;a ver: mis pap&aacute;s nunca intentaron alejarme de lo que &eacute;ramos. Todo lo contrario. Ellos entendieron muy temprano que la tecnolog&iacute;a pod&iacute;a abrirme puertas. Cuando no vienes de un lugar con muchos privilegios, muchas veces necesitas herramientas adicionales para poder moverte en determinados espacios. Mi pap&aacute; hizo enormes esfuerzos para que yo tuviera acceso a tecnolog&iacute;a desde muy joven. Tuve mi primera laptop bastante temprano y termin&eacute; siendo conocido como el &ldquo;chico de la tecnolog&iacute;a&rdquo;. Hoy agradezco much&iacute;simo a mis pap&aacute;s por haberme dado esas herramientas. Sin saberlo, estaban ayudando a construir una parte importante de mi identidad.</p>
+
+<p>Como algo natural termin&eacute; estudiando Inform&aacute;tica en la UMSA. Y no me fue nada mal. Era uno de los mejores, sacaba cien en programaci&oacute;n y en los laboratorios, y algunos me llamaban pr&aacute;cticamente un prodigio.</p>
+
+<p>Hasta que algo dentro de m&iacute; empez&oacute; a hacer ruido. Porque siempre hab&iacute;a otra parte de m&iacute; que estaba ah&iacute;: la que quer&iacute;a entender a la gente, encontrarse con el otro, preguntarse por nuestra sociedad, nuestra cultura y nuestras desigualdades. Yo hab&iacute;a vivido de cerca los conflictos sociales de octubre de 2003, y mientras avanzaba en Inform&aacute;tica, empec&eacute; a sentir que las m&aacute;quinas no eran suficientes para explicar el mundo que me interesaba entender.</p>
+
+<p>Entonces hice algo que, en ese momento, parec&iacute;a una locura: me cambi&eacute; de Inform&aacute;tica a Sociolog&iacute;a. Pas&eacute; de ser el chico de la tecnolog&iacute;a a convertirme, en mi propia caricatura, en el hippie que habla de lo social. Y durante un tiempo pens&eacute; que hab&iacute;a dejado atr&aacute;s todo lo anterior. Incluso me daba cierta tristeza. Sent&iacute;a que hab&iacute;a tirado por la borda todo lo que mis pap&aacute;s hab&iacute;an hecho para abrirme las puertas de ese mundo tecnol&oacute;gico.</p>
+
+<p>Pero no fue as&iacute;. Lo digital siempre hab&iacute;a sido parte de mi formaci&oacute;n, igual que mi herencia aymara y popular. No ten&iacute;a que eliminar una cosa para quedarme con la otra. Simplemente todav&iacute;a no sab&iacute;a c&oacute;mo juntarlas.</p>
+
+<p>Pasaron los a&ntilde;os y, casi sin darme cuenta, mi vida profesional empez&oacute; a llevarme justamente hacia ese lugar. La sociolog&iacute;a me permiti&oacute; entender a las personas, las estructuras, la cultura y las desigualdades. La tecnolog&iacute;a segu&iacute;a ah&iacute;, acompa&ntilde;&aacute;ndome, pero ahora desde otro lugar. Empec&eacute; a trabajar en temas relacionados con tecnolog&iacute;a, internet, derechos digitales y, m&aacute;s recientemente, inteligencia artificial. Y un d&iacute;a me di cuenta de que aquello que durante a&ntilde;os hab&iacute;a sentido como una contradicci&oacute;n era, en realidad, una intersecci&oacute;n. A los 35 a&ntilde;os soy soci&oacute;logo y trabajo en tecnolog&iacute;a. Las dos cosas que alguna vez pens&eacute; que estaban separadas terminaron siendo parte de la misma historia.</p>
+
+<p>Quiz&aacute;s tambi&eacute;n es algo muy de nuestra generaci&oacute;n. Los millennials vimos pasar los disquetes, los CD, las flash memory, los celulares, Facebook, los smartphones, las redes sociales y ahora la inteligencia artificial. Vivimos una revoluci&oacute;n tecnol&oacute;gica pr&aacute;cticamente en tiempo real. Pero tambi&eacute;n crecimos escuchando a nuestros abuelos, participando de nuestras tradiciones, viajando al pueblo, comiendo en apthapi y aprendiendo c&oacute;digos culturales que no estaban escritos en ning&uacute;n manual.</p>
+
+<p>Vivimos entre c&oacute;digos. C&oacute;digos de m&aacute;quina, c&oacute;digos culturales, c&oacute;digos familiares, c&oacute;digos sociales. Y durante mucho tiempo pens&eacute; que ten&iacute;a que elegir entre ellos. Hoy creo que justamente ah&iacute; est&aacute; la riqueza, porque un c&oacute;digo, para funcionar, necesita conectarse con otros. Y eso tambi&eacute;n es la vida actual: la tecnolog&iacute;a ya no est&aacute; afuera de nuestra cultura. Est&aacute; metida en c&oacute;mo trabajamos, aprendemos, nos relacionamos, buscamos oportunidades, hacemos pol&iacute;tica, cuidamos nuestras comunidades y hasta en c&oacute;mo preservamos nuestra memoria.</p>
+
+<p>Por eso nace C&oacute;digo Awicha. No como un proyecto que quiere explicar la tecnolog&iacute;a desde arriba, ni como un intento de volver &ldquo;tecnol&oacute;gico&rdquo; lo ancestral. M&aacute;s bien al rev&eacute;s: quiero hablar de inteligencia artificial y tecnolog&iacute;a desde lo nuestro. Desde La Paz, desde Bolivia, desde nuestras familias, nuestras historias y nuestros c&oacute;digos culturales. Porque la tecnolog&iacute;a ya no es ese privilegio que yo ve&iacute;a cuando era ni&ntilde;o, cuando una computadora o una flash memory pod&iacute;an hacerte sentir especial frente a los dem&aacute;s. Hoy lo digital es una necesidad. Y si la tecnolog&iacute;a est&aacute; cada vez m&aacute;s presente en nuestras vidas, entonces tambi&eacute;n tiene que dialogar con aquello que somos.</p>
+
+<p>No creo que tengamos que abandonar nuestros saberes para entrar al mundo digital. Creo que podemos llevarlos con nosotros. De hecho, quiz&aacute;s necesitamos m&aacute;s que nunca hacerlo. El saber de mis pap&aacute;s. El de mis abuelos. El que se transmite hablando, el que no necesariamente est&aacute; escrito en un paper, el que aprendimos viendo, haciendo y compartiendo. Ese saber tambi&eacute;n tiene algo que decirle a la tecnolog&iacute;a. Y la tecnolog&iacute;a, a su vez, puede convertirse en una herramienta para abrir oportunidades, aprender, crear y conectarnos.</p>
+
+<p>Eso es C&oacute;digo Awicha. Una invitaci&oacute;n a encontrarnos en ese cruce: entre el saber antiguo y el saber nuevo, entre lo popular y lo t&eacute;cnico, entre nuestros c&oacute;digos y los c&oacute;digos de las m&aacute;quinas. A pensar la inteligencia artificial y lo digital desde lo nuestro: con cari&ntilde;o, pero tambi&eacute;n con criterio. Sin miedo, pero sin ingenuidad.</p>
+
+<p>Porque quiz&aacute;s nunca fueron dos mundos. Quiz&aacute;s siempre fueron dos c&oacute;digos buscando c&oacute;mo encontrarse.</p>
+
+<p class="cierre">C&oacute;digo Awicha.<br><span>Dos saberes, una mirada.</span></p>
+
+<a href="index.html" class="backhome">&larr; Volver al inicio</a>
+</div></article>
+
+<footer><div class="in">
+<div><div class="fLogo"><img src="assets/logo-blanco.png" alt="C&oacute;digo Awicha"></div><p>Detr&aacute;s est&aacute; Camilo Arratia Toledo &middot; La Paz, Bolivia</p></div>
+<div class="social"><a href="https://www.instagram.com/codigoawicha" target="_blank">Instagram</a><a href="https://www.tiktok.com/@codigoawicha" target="_blank">TikTok</a></div>
+</div></footer>
+</body>
+</html>
