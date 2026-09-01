@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dice Mi Awicha — Código Awicha</title>
-<meta name="description" content="Consejos digitales con sabidura de siempre.">
+<title>Dice mi awicha — Código Awicha</title>
+<meta name="description" content="Consejos digitales con sabiduría de siempre. Todos los videos de Dice mi awicha en un solo lugar.">
 <link rel="icon" type="image/png" href="assets/iso-color.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,53 +12,135 @@
 <style>
 :root{--morado:#c084fc;--morado-hondo:#9d5be0;--turquesa:#2dd4bf;--tinta:#1b1626;--tinta-soft:#241d33;--texto:#f2edfb;--muted:#a99cc4;--linea:#3a2f52}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--tinta);color:var(--texto);font-family:'Poppins',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
-.wrap{max-width:1100px;margin:0 auto;padding:0 24px;width:100%}
+html{scroll-behavior:smooth}
+body{background:var(--tinta);color:var(--texto);font-family:'Poppins',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
 a{color:inherit}
 .topbar{background:#140f1e;border-bottom:1px solid var(--linea);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--muted);padding:11px 0}
 .topbar .in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .topbar b{color:var(--turquesa);font-weight:700}
-nav{border-bottom:1px solid var(--linea);background:rgba(27,22,38,.92)}
+nav{border-bottom:1px solid var(--linea);position:sticky;top:0;background:rgba(27,22,38,.92);backdrop-filter:blur(8px);z-index:10}
 nav .in{max-width:1100px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
 nav .logo img{height:54px;width:auto;display:block}
 .menu{display:flex;gap:24px;list-style:none;font-size:14px;font-weight:500;flex-wrap:wrap}
 .menu a{text-decoration:none;color:var(--muted);transition:color .2s}
 .menu a:hover{color:var(--turquesa)}
-main{flex:1;display:flex;align-items:center;justify-content:center;padding:80px 0}
-.const{text-align:center;max-width:580px;margin:0 auto}
-.const .n{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.14em;color:var(--morado-hondo);font-weight:700;margin-bottom:20px}
-.const h1{font-family:'Orbitron',sans-serif;font-size:clamp(28px,5.5vw,48px);font-weight:900;line-height:1.12;margin-bottom:22px}
-.const .desc{font-size:19px;color:var(--muted)}
-.const .badge{display:inline-block;margin:30px 0 26px;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.08em;color:var(--morado-hondo);border:1px solid var(--morado-hondo);border-radius:24px;padding:10px 22px}
-.const .prompt{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--muted);margin-bottom:34px}
-.const .prompt .cur{color:var(--turquesa);animation:blink 1.1s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.backhome{display:inline-block;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--turquesa);text-decoration:none;border:1px solid var(--turquesa);padding:12px 22px;border-radius:24px}
+.head{padding:60px 0 40px;border-bottom:1px solid var(--linea)}
+.head .cat{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.1em;color:var(--morado-hondo);font-weight:700}
+.head h1{font-family:'Orbitron',sans-serif;font-size:clamp(30px,5.5vw,48px);font-weight:900;line-height:1.1;margin:18px 0 14px}
+.head .desc{font-size:18px;color:var(--muted);max-width:560px}
+.gallery{padding:56px 0 90px}
+.grid-videos{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.vcard{background:var(--tinta-soft);border:1px solid var(--linea);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.vcard .quote{font-size:17px;color:var(--texto);font-weight:600;line-height:1.4;font-style:italic}
+.vcard .desc{font-size:14px;color:var(--muted);line-height:1.4;margin-top:-8px}
+.vcard .frame{display:flex;justify-content:center}
+.tiktok-embed{margin:0 !important;max-width:100% !important}
+.backhome{display:inline-block;margin-top:50px;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--turquesa);text-decoration:none;border:1px solid var(--turquesa);padding:12px 22px;border-radius:24px}
 .backhome:hover{background:var(--turquesa);color:var(--tinta)}
-footer{background:#140f1e;border-top:1px solid var(--linea);padding:40px 0}
+footer{background:#140f1e;border-top:1px solid var(--linea);padding:44px 0}
 footer .in{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
-footer .fLogo img{height:64px;width:auto;margin-bottom:8px}
+footer .fLogo img{height:74px;width:auto;margin-bottom:10px}
 footer p{color:var(--muted);font-size:13px}
 footer .social{display:flex;gap:18px;font-size:14px}
 footer .social a{color:var(--turquesa);text-decoration:none;font-weight:500}
+@media(max-width:900px){.grid-videos{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.grid-videos{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="topbar"><div class="in"><span>awicha@codigo:~$ <b>dos saberes, una mirada</b></span><span>La Paz &middot; Bolivia</span></div></div>
 <nav><div class="in">
-<a href="index.html" class="logo"><img src="assets/logo-blanco.png" alt="Código Awicha"></a>
-<ul class="menu"><li><a href="index.html">Inicio</a></li><li><a href="index.html#secciones">Secciones</a></li><li><a href="index.html#blog">Blog</a></li><li><a href="quien.html">Quién está detrás</a></li></ul>
+<a href="index.html" class="logo"><img src="assets/logo-blanco.png" alt="C&oacute;digo Awicha"></a>
+<ul class="menu"><li><a href="index.html">Inicio</a></li><li><a href="index.html#secciones">Secciones</a></li><li><a href="index.html#blog">Blog</a></li><li><a href="quien.html">Qui&eacute;n est&aacute; detr&aacute;s</a></li></ul>
 </div></nav>
-<main><div class="wrap"><div class="const">
-<div class="n">03 — DICE MI AWICHA</div>
+
+<header class="head"><div class="wrap">
+<span class="cat">03 &mdash; DICE MI AWICHA</span>
 <h1>Dice mi awicha</h1>
-<p class="desc">Consejos digitales con sabidur&iacute;a de siempre.</p>
-<div class="badge">En construcción</div>
-<p class="prompt">awicha@codigo:~$ preparando contenido<span class="cur">_</span></p>
-<div><a href="index.html" class="backhome">← Volver al inicio</a></div>
-</div></div></main>
+<p class="desc">Consejos digitales con sabidur&iacute;a de siempre. Todos los videos, juntos ac&aacute;.</p>
+</div></header>
+
+<!-- =====================================================
+     GALERÍA DE VIDEOS — cada video es un bloque .vcard
+     Ordenados del más nuevo al más viejo (el más nuevo va primero).
+
+     PARA AGREGAR UN VIDEO NUEVO:
+     1. Copiá un bloque completo <div class="vcard">...</div>.
+     2. Pegalo como el PRIMERO dentro de <div class="grid-videos">
+        (así el más reciente queda arriba a la izquierda).
+     3. Cambiá el texto de <p class="quote"> por el dicho del video nuevo,
+        y el de <p class="desc"> por una frase corta de qué trata.
+     4. Cambiá el número de ID que aparece DOS VECES dentro del bloque
+        (en cite="...video/NUMERO" y en data-video-id="NUMERO") por
+        el ID del video nuevo. El ID es el número al final del link:
+        https://www.tiktok.com/@codigoawicha/video/7123456789012345678
+                                                   └──── este número ────┘
+     ===================================================== -->
+<section class="gallery"><div class="wrap">
+<div class="grid-videos">
+
+  <div class="vcard">
+    <p class="quote">&ldquo;No todo lo que brilla es oro.&rdquo;</p>
+    <p class="desc">Por qu&eacute; la IA a veces inventa datos y te lo dice con total seguridad.</p>
+    <div class="frame">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@codigoawicha/video/7678738519430532372" data-video-id="7678738519430532372" style="max-width: 400px;min-width: 280px;">
+        <section><a target="_blank" title="@codigoawicha" href="https://www.tiktok.com/@codigoawicha">@codigoawicha</a></section>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="vcard">
+    <p class="quote">&ldquo;Nadie cosecha en campo ajeno.&rdquo;</p>
+    <p class="desc">La IA que hace arte no lo saca de la nada: aprendi&oacute; de obras de personas reales.</p>
+    <div class="frame">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@codigoawicha/video/7670238133170015509" data-video-id="7670238133170015509" style="max-width: 400px;min-width: 280px;">
+        <section><a target="_blank" title="@codigoawicha" href="https://www.tiktok.com/@codigoawicha">@codigoawicha</a></section>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="vcard">
+    <p class="quote">&ldquo;El pez muere por su propia boca.&rdquo;</p>
+    <p class="desc">Por qu&eacute; no pod&eacute;s parar de deslizar: c&oacute;mo funciona el scroll infinito.</p>
+    <div class="frame">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@codigoawicha/video/7659510796774346004" data-video-id="7659510796774346004" style="max-width: 400px;min-width: 280px;">
+        <section><a target="_blank" title="@codigoawicha" href="https://www.tiktok.com/@codigoawicha">@codigoawicha</a></section>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="vcard">
+    <p class="quote">&ldquo;En el apuro est&aacute; la trampa.&rdquo;</p>
+    <p class="desc">C&oacute;mo funciona la estafa de ofertas de trabajo falsas por WhatsApp.</p>
+    <div class="frame">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@codigoawicha/video/7657186079623089428" data-video-id="7657186079623089428" style="max-width: 400px;min-width: 280px;">
+        <section><a target="_blank" title="@codigoawicha" href="https://www.tiktok.com/@codigoawicha">@codigoawicha</a></section>
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="vcard">
+    <p class="quote">&ldquo;&iquest;Son todos iguales en la cancha?&rdquo;</p>
+    <p class="desc">La IA de la FIFA en el Mundial: misma herramienta, distinta capacidad de usarla.</p>
+    <div class="frame">
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@codigoawicha/video/7655363469734317333" data-video-id="7655363469734317333" style="max-width: 400px;min-width: 280px;">
+        <section><a target="_blank" title="@codigoawicha" href="https://www.tiktok.com/@codigoawicha">@codigoawicha</a></section>
+      </blockquote>
+    </div>
+  </div>
+
+  <!-- Próximo video: copiar un bloque .vcard de arriba, pegarlo como PRIMERO, y cambiar quote + ID -->
+
+</div>
+
+<a href="index.html" class="backhome">&larr; Volver al inicio</a>
+</div></section>
+
+<script async src="https://www.tiktok.com/embed.js"></script>
+
 <footer><div class="in">
-<div><div class="fLogo"><img src="assets/logo-blanco.png" alt="Código Awicha"></div><p>Detrás está Camilo Arratia Toledo · La Paz, Bolivia</p></div>
+<div><div class="fLogo"><img src="assets/logo-blanco.png" alt="C&oacute;digo Awicha"></div><p>Detr&aacute;s est&aacute; Camilo Arratia Toledo &middot; La Paz, Bolivia</p></div>
 <div class="social"><a href="https://www.instagram.com/codigoawicha" target="_blank">Instagram</a><a href="https://www.tiktok.com/@codigoawicha" target="_blank">TikTok</a></div>
 </div></footer>
 </body>

@@ -104,32 +104,87 @@ footer .social a{color:var(--turquesa);text-decoration:none;font-weight:500}
 </div></div></section>
 
 <!-- =====================================================
-     ÚLTIMOS VIDEOS — TikTok embebido
-     PARA CAMBIAR EL VIDEO: reemplazá el número largo que está
-     en data-video-id="AQUÍ" y también en el href de abajo,
-     por el ID del video nuevo. El ID es el número que aparece
-     en la URL de TikTok, ej:
-     https://www.tiktok.com/@codigoawicha/video/7123456789012345678
-                                                └────── este número ──────┘
+     ÚLTIMOS VIDEOS — se carga automático desde dice-mi-awicha.html
+     No hace falta tocar esta sección nunca: siempre muestra el
+     PRIMER video que haya en la galería de "Dice mi awicha".
+     Para cambiar el video que se ve acá, andá a dice-mi-awicha.html
+     y poné el video nuevo como el primero de la lista.
      ===================================================== -->
 <section class="videos" id="ultimosvideos"><div class="wrap">
 <div class="head"><h2>&Uacute;ltimo video</h2><span>@codigoawicha en TikTok</span></div>
-<div class="videoWrap">
-<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@codigoawicha/video/7678738519430532372" data-video-id="7678738519430532372" style="max-width: 605px;min-width: 325px;">
-  <section>
-    <a target="_blank" title="@codigoawicha" href="https://www.tiktok.com/@codigoawicha">@codigoawicha</a>
-  </section>
-</blockquote>
-<script async src="https://www.tiktok.com/embed.js"></script>
+<div class="videoWrap" id="videoContainer">
+  <p style="color:var(--muted);font-family:'Orbitron',sans-serif;font-size:13px">Cargando video&hellip;</p>
 </div>
 </div></section>
+<script>
+// Busca el primer video (data-video-id) dentro de dice-mi-awicha.html
+// y lo muestra acá con el reproductor oficial de TikTok.
+fetch('dice-mi-awicha.html')
+  .then(function(r){ return r.text(); })
+  .then(function(html){
+    var m = html.match(/data-video-id="(\d+)"/);
+    var container = document.getElementById('videoContainer');
+    if (m && m[1]) {
+      var id = m[1];
+      container.innerHTML =
+        '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@codigoawicha/video/' + id +
+        '" data-video-id="' + id + '" style="max-width: 605px;min-width: 325px;">' +
+        '<section><a target="_blank" title="@codigoawicha" href="https://www.tiktok.com/@codigoawicha">@codigoawicha</a></section>' +
+        '</blockquote>';
+      var s = document.createElement('script');
+      s.src = 'https://www.tiktok.com/embed.js';
+      s.async = true;
+      document.body.appendChild(s);
+    } else {
+      container.innerHTML = '<a href="dice-mi-awicha.html" style="color:var(--turquesa);font-family:\'Orbitron\',sans-serif;font-size:14px">Ver videos &rarr;</a>';
+    }
+  })
+  .catch(function(){
+    document.getElementById('videoContainer').innerHTML =
+      '<a href="dice-mi-awicha.html" style="color:var(--turquesa);font-family:\'Orbitron\',sans-serif;font-size:14px">Ver videos &rarr;</a>';
+  });
+</script>
 <!-- ===================================================== -->
 
+<!-- =====================================================
+     ÚLTIMO DEL BLOG — se carga automático desde voz-propia.html
+     No hace falta tocar esta sección nunca: siempre muestra el
+     PRIMER artículo que haya en la galería de "En voz propia".
+     Para cambiar lo que se ve acá, andá a voz-propia.html y
+     poné el artículo nuevo como el primero de la lista.
+     ===================================================== -->
 <section class="feed" id="blog"><div class="wrap"><div class="head"><h2>&Uacute;ltimo del blog</h2><span>publicaciones recientes</span></div>
-<article class="post"><div class="meta">01 SEP 2026<span class="cat c1">Bienvenida</span></div>
-<div><h3><a href="dos-codigos-en-mi-vida.html">Dos c&oacute;digos en mi vida</a></h3>
-<p>Por qu&eacute; cre&eacute; este espacio, y por qu&eacute; quiero que seas parte. La historia de un soci&oacute;logo que empez&oacute; en inform&aacute;tica y descubri&oacute; que el saber antiguo y el saber nuevo nunca estuvieron separados.</p></div></article>
+<div id="postContainer">
+  <p style="color:var(--muted);font-family:'Orbitron',sans-serif;font-size:13px">Cargando&hellip;</p>
+</div>
 </div></section>
+<script>
+// Busca el primer artículo (bloque .pcard) dentro de voz-propia.html
+// y lo muestra acá en el mismo formato de siempre.
+fetch('voz-propia.html')
+  .then(function(r){ return r.text(); })
+  .then(function(html){
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var first = doc.querySelector('.pcard');
+    var container = document.getElementById('postContainer');
+    if (first) {
+      var href = first.getAttribute('href');
+      var fecha = first.querySelector('.meta') ? first.querySelector('.meta').innerHTML : '';
+      var titulo = first.querySelector('h3') ? first.querySelector('h3').innerHTML : '';
+      var resumen = first.querySelector('p') ? first.querySelector('p').innerHTML : '';
+      container.innerHTML =
+        '<article class="post"><div class="meta">' + fecha + '<span class="cat c1">En voz propia</span></div>' +
+        '<div><h3><a href="' + href + '">' + titulo + '</a></h3><p>' + resumen + '</p></div></article>';
+    } else {
+      container.innerHTML = '<a href="voz-propia.html" style="color:var(--turquesa);font-family:\'Orbitron\',sans-serif;font-size:14px">Ver el blog &rarr;</a>';
+    }
+  })
+  .catch(function(){
+    document.getElementById('postContainer').innerHTML =
+      '<a href="voz-propia.html" style="color:var(--turquesa);font-family:\'Orbitron\',sans-serif;font-size:14px">Ver el blog &rarr;</a>';
+  });
+</script>
+<!-- ===================================================== -->
 <footer id="quien"><div class="wrap">
 <div><div class="fLogo"><img src="assets/logo-blanco.png" alt="C&oacute;digo Awicha"></div><p>Detr&aacute;s est&aacute; Camilo Arratia Toledo &middot; La Paz, Bolivia</p></div>
 <div class="social"><a href="https://www.instagram.com/codigoawicha" target="_blank">Instagram</a><a href="https://www.tiktok.com/@codigoawicha" target="_blank">TikTok</a></div>
