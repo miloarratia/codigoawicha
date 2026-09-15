@@ -70,6 +70,31 @@ nav .logo img{height:54px;width:auto;display:block}
 .card.c2{--acc:var(--turquesa)}
 .card.c3{--acc:var(--morado-hondo)}
 
+/* TARJETA DEL AUDITOR — destacada, ancho completo */
+.card.tool{
+  --acc:var(--turquesa);
+  grid-column:1 / -1;
+  flex-direction:row;
+  align-items:center;
+  gap:26px;
+  padding:22px;
+  overflow:hidden;
+}
+.card.tool .toolImg{
+  flex:none;
+  width:180px;
+  height:120px;
+  border-radius:8px;
+  overflow:hidden;
+  background:#fff;
+}
+.card.tool .toolImg img{width:100%;height:100%;object-fit:cover;display:block}
+.card.tool .toolText{display:flex;flex-direction:column;gap:8px}
+@media(max-width:640px){
+  .card.tool{flex-direction:column;text-align:center}
+  .card.tool .toolImg{width:100%;height:auto}
+}
+
 /* ÚLTIMOS VIDEOS */
 .videos{padding:66px 0 20px;border-top:1px solid var(--linea)}
 .videos .head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--linea);padding-bottom:16px;margin-bottom:34px}
@@ -120,6 +145,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <a class="card c1" href="voz-propia.html"><span class="n">01 &mdash; Lo que pienso </span><h3>En voz propia</h3><p>Reflexiones personales sobre tecnolog&iacute;a, cultura y lo que nos toca.</p></a>
 <a class="card c2" href="actualidad.html"><span class="n">02 &mdash; Lo que esta pasando </span><h3>Actualidad tecnol&oacute;gica</h3><p>Noticias de tecnolog&iacute;a e IA, contadas de manera cr&iacute;tica.</p></a>
 <a class="card c3" href="dice-mi-awicha.html"><span class="n">03 &mdash; Lo que podemos aprender</span><h3>Dice mi awicha</h3><p>Consejos digitales con sabidur&iacute;a de siempre.</p></a>
+
+<a class="card tool" href="auditor-contrasenas.html">
+  <div class="toolImg"><img src="assets/auditor-banner.jpg" alt="Auditor de contrase&ntilde;as seguras"></div>
+  <div class="toolText">
+    <span class="n">HERRAMIENTA &mdash; DICE MI AWICHA</span>
+    <h3>Auditor de contrase&ntilde;as seguras</h3>
+    <p>Escrib&iacute; una contrase&ntilde;a y mir&aacute; cu&aacute;nto tardar&iacute;an en adivinarla. Todo el c&aacute;lculo ocurre en tu navegador, nada se env&iacute;a a ning&uacute;n lado.</p>
+  </div>
+</a>
 </div></div></section>
 
 <!-- =====================================================

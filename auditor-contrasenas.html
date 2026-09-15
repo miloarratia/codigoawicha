@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Analiza una contraseña en el navegador y estima cuánto tardarían distintos tipos de ataque en adivinarla. Todo el cálculo ocurre localmente, sin enviar ni guardar nada.">
+<meta name="color-scheme" content="light dark">
+<title>Auditor de contraseñas seguras — Código Awicha</title>
+<link rel="icon" type="image/png" href="assets/iso-color.png">
+<style>
+  :root {
+    --bg: #1b1626;
+    --surface: #241d33;
+    --surface-2: #2a2140;
+    --text: #f2edfb;
+    --text-muted: #a99cc4;
+    --border: #3a2f52;
+    --accent: #c084fc;
+    --accent-soft: #3a2f52;
+    --accent-contrast: #1b1626;
+    --sev-1: #e0574a;
+    --sev-2: #e2953f;
+    --sev-3: #d4bb4a;
+    --sev-4: #63a883;
+    --sev-5: #2dd4bf;
+    --mono-chip-bg: #2a2140;
+    --focus: #2dd4bf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1626;
+      --surface: #241d33;
+      --surface-2: #2a2140;
+      --text: #f2edfb;
+      --text-muted: #a99cc4;
+      --border: #3a2f52;
+      --accent: #c084fc;
+      --accent-soft: #3a2f52;
+      --accent-contrast: #1b1626;
+      --sev-1: #e0574a;
+      --sev-2: #e2953f;
+      --sev-3: #d4bb4a;
+      --sev-4: #63a883;
+      --sev-5: #2dd4bf;
+      --mono-chip-bg: #2a2140;
+      --focus: #2dd4bf;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1626;
+    --surface: #241d33;
+    --surface-2: #2a2140;
+    --text: #f2edfb;
+    --text-muted: #a99cc4;
+    --border: #3a2f52;
+    --accent: #c084fc;
+    --accent-soft: #3a2f52;
+    --accent-contrast: #1b1626;
+    --sev-1: #e0574a;
+    --sev-2: #e2953f;
+    --sev-3: #d4bb4a;
+    --sev-4: #63a883;
+    --sev-5: #2dd4bf;
+    --mono-chip-bg: #2a2140;
+    --focus: #2dd4bf;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Poppins", -apple-system, "Segoe UI", sans-serif;
+    padding-inline: 16px;
+    padding-block: 32px;
+    display: flex;
+    justify-content: center;
+  }
+  .mono, input#pw, .readout-value, .bits-caption, .chip-mono {
+    font-family: "Orbitron", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  main {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  header.page-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .lock-badge {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 4px 0;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    max-width: 46ch;
+  }
+
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .trust-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 12px 5px 10px;
+  }
+  .trust-pill svg { color: var(--sev-4); flex: none; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .pw-row {
+    display: flex;
+    gap: 8px;
+  }
+  input#pw {
+    flex: 1;
+    min-width: 0;
+    font-size: 1.05rem;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+  }
+  input#pw:focus {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+  button.icon-btn {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  button.icon-btn:hover { color: var(--text); border-color: var(--focus); }
+  button.icon-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+  .example-note {
+    margin: 8px 0 0 0;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .gen-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  button.link-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 2px;
+  }
+  button.link-btn:hover { text-decoration: underline; }
+  button.link-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  .meter-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  #meter-label {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .bits-caption { font-size: 0.78rem; color: var(--text-muted); }
+
+  .meter-track {
+    display: flex;
+    gap: 4px;
+    height: 10px;
+  }
+  .meter-seg {
+    flex: 1;
+    border-radius: 4px;
+    background: var(--surface-2);
+    transition: background 120ms ease;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .chip {
+    font-size: 0.78rem;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: var(--mono-chip-bg);
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+  }
+  .chip .dot {
+    width: 6px; height: 6px; border-radius: 50%; flex: none;
+    background: var(--sev-2);
+  }
+  .chip.good .dot { background: var(--sev-5); }
+
+  h2.panel-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin: 0 0 14px 0;
+  }
+
+  .scenario-list { display: flex; flex-direction: column; gap: 2px; }
+  .scenario-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .scenario-row:last-child { border-bottom: none; }
+  .scenario-icon {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+  }
+  .scenario-text { flex: 1; min-width: 0; }
+  .scenario-label { font-size: 0.88rem; font-weight: 500; }
+  .scenario-sub { font-size: 0.74rem; color: var(--text-muted); }
+  .readout-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .tips-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .tips-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .tips-list svg { flex: none; margin-top: 3px; color: var(--sev-5); }
+
+  footer {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    padding-top: 4px;
+  }
+  footer a { color: var(--text-muted); }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 480px) {
+    .readout-value { font-size: 0.82rem; }
+    .scenario-label { font-size: 0.82rem; }
+  }
+
+  /* --- Código Awicha: barra + nav + pie --- */
+  .ca-topbar{background:#140f1e;border-bottom:1px solid var(--border);font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--text-muted);padding:11px 16px}
+  .ca-topbar .in{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .ca-topbar b{color:var(--sev-5);font-weight:700}
+  .ca-nav{border-bottom:1px solid var(--border);background:rgba(27,22,38,.92)}
+  .ca-nav .in{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .ca-nav .logo img{height:38px;width:auto;display:block}
+  @media (min-width: 700px){.ca-nav .logo img{height:44px}}
+  .ca-menu{display:flex;gap:22px;list-style:none;font-size:13px;font-weight:500;flex-wrap:wrap;margin:0;padding:0}
+  .ca-menu a{text-decoration:none;color:var(--text-muted);transition:color .2s}
+  .ca-menu a:hover{color:var(--sev-5)}
+  .ca-eyebrow{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.12em;color:var(--sev-5);margin:0 0 6px 0}
+  .ca-footer{background:#140f1e;border-top:1px solid var(--border);padding:32px 16px;margin-top:8px}
+  .ca-footer .in{max-width:640px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;font-family:'Orbitron',sans-serif;font-size:11px;color:var(--text-muted)}
+  .ca-footer a{color:var(--sev-5);text-decoration:none}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="ca-topbar"><div class="in"><span>awicha@codigo:~$ <b>dos saberes, una mirada</b></span><span>La Paz &middot; Bolivia</span></div></div>
+<nav class="ca-nav"><div class="in">
+<a href="index.html" class="logo"><img src="assets/logo-blanco.png" alt="C&oacute;digo Awicha"></a>
+<ul class="ca-menu"><li><a href="index.html">Inicio</a></li><li><a href="index.html#secciones">Secciones</a></li><li><a href="dice-mi-awicha.html">Dice mi awicha</a></li></ul>
+</div></nav>
+
+<main>
+  <header class="page-head">
+    <div class="lock-badge" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none"/></svg>
+    </div>
+    <div>
+      <p class="ca-eyebrow">// DICE MI AWICHA</p>
+      <h1>Auditor de contraseñas seguras</h1>
+      <p class="subtitle">Escribe una contraseña y mira, en números concretos, cuánto tardarían distintos tipos de ataque en adivinarla.</p>
+    </div>
+  </header>
+
+  <div class="trust-row">
+    <span class="trust-pill">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Todo el cálculo ocurre en tu navegador
+    </span>
+    <span class="trust-pill">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Nada se envía ni se guarda en ningún servidor
+    </span>
+  </div>
+
+  <section class="panel">
+    <label class="field-label" for="pw">Tu contraseña</label>
+    <div class="pw-row">
+      <input id="pw" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" value="Bolivia2024!">
+      <button class="icon-btn" id="toggle-visibility" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+        <svg id="eye-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <p class="example-note" id="example-note">Este es un ejemplo para que veas cómo funciona. Bórralo y escribe la tuya (no se guarda en ningún lado).</p>
+    <div class="gen-row">
+      <button class="link-btn" id="generate-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+        Generar una contraseña fuerte al azar
+      </button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="meter-head">
+      <span id="meter-label">—</span>
+      <span class="bits-caption" id="bits-caption"></span>
+    </div>
+    <div class="meter-track" id="meter-track">
+      <div class="meter-seg" data-seg="1"></div>
+      <div class="meter-seg" data-seg="2"></div>
+      <div class="meter-seg" data-seg="3"></div>
+      <div class="meter-seg" data-seg="4"></div>
+      <div class="meter-seg" data-seg="5"></div>
+    </div>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Tiempo estimado para adivinarla</h2>
+    <div class="scenario-list" id="scenario-list"></div>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Cómo mejorarla</h2>
+    <ul class="tips-list">
+      <li>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        Prioriza la longitud sobre la complejidad: una frase de 16 a 20 caracteres suele ser más difícil de romper que una palabra corta llena de símbolos.
+      </li>
+      <li>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        Evita palabras de diccionario, nombres, fechas o el nombre de tu país o ciudad, aunque les cambies letras por números.
+      </li>
+      <li>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        No repitas la misma contraseña en distintos sitios: si uno se filtra, esa contraseña queda inútil en todos los demás.
+      </li>
+      <li>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        Usa un gestor de contraseñas para generar y guardar contraseñas únicas y largas por sitio, y activa la verificación en dos pasos donde puedas.
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <strong>Cómo se calcula esto:</strong> se analiza la contraseña buscando patrones conocidos (palabras comunes, contraseñas filtradas frecuentes, secuencias de teclado, repeticiones) y se estima cuántos intentos haría falta para adivinarla. Ese número se compara con cuatro velocidades de ataque distintas para dar un tiempo aproximado, no una medición exacta. Las cifras de velocidad offline están basadas en la
+    <a href="https://www.hivesystems.com/blog/are-your-passwords-in-the-green" target="_blank" rel="noopener">tabla de contraseñas 2026 de Hive Systems</a>
+    (hash bcrypt) y en un
+    <a href="https://tutorials.technology/blog/08-Hashcat-GPU-benchmarking-table-Nvidia-and-amd.html" target="_blank" rel="noopener">benchmark de hashcat con GPU RTX 5090</a>
+    (hash rápido sin sal, tipo MD5). El escenario en línea es una estimación ilustrativa. Herramienta educativa, sin garantías: la seguridad real también depende de cómo el servicio que usas guarda tus contraseñas.
+  </footer>
+</main>
+
+<footer class="ca-footer"><div class="in">
+<span>C&Oacute;DIGO AWICHA</span>
+<span>Detr&aacute;s: Camilo Arratia &middot; <a href="https://www.instagram.com/codigoawicha" target="_blank">Instagram</a> &middot; <a href="https://www.tiktok.com/@codigoawicha" target="_blank">TikTok</a></span>
+</div></footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var COMMON = ["123456","password","123456789","12345678","12345","qwerty","1234567","111111",
+  "1234567890","123123","abc123","1q2w3e4r","000000","iloveyou","123321","qwerty123","password1",
+  "welcome","admin","login","master","monkey","dragon","letmein","football","baseball","trustno1",
+  "princess","sunshine","superman","batman","starwars","whatever","freedom","shadow","michael",
+  "jennifer","jordan","hunter","buster","soccer","hockey","killer","george","charlie","andrew",
+  "tigger","robert","thomas","hannah","daniel","hello","ranger","joshua","maggie","mustang",
+  "1234","12345678910","zaq1zaq1","qazwsx","asdfgh","asdf1234","000000000","q1w2e3r4","aa123456",
+  "contrasena","claveclave","clave123","hola123","cochabamba","lapaz","bolivia","boliviano",
+  "teamo","teamo1","amorcito","corazon","mimama","mipapa","futbol","campeon","estrella1","santacruz"];
+
+  var DICT = ["amor","vida","sol","luna","cielo","tierra","agua","fuego","rio","montana","valle",
+  "flor","rosa","perro","gato","leon","tigre","elefante","aguila","condor","llama","alpaca",
+  "familia","hermano","hermana","abuelo","abuela","primo","amigo","amiga","escuela","trabajo",
+  "casa","carro","musica","basquet","colegio","universidad","enero","febrero","marzo",
+  "abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre",
+  "lunes","martes","miercoles","jueves","viernes","sabado","domingo","rojo","azul","verde",
+  "amarillo","blanco","negro","morado","naranja","chocolate","pizza","cerveza","cafe",
+  "apple","banana","orange","summer","winter","spring","autumn","dragon","phoenix","tiger",
+  "eagle","wolf","shadow","angel","diamond","silver","golden","crystal","forest","ocean",
+  "mountain","river","flower","music","guitar","soccer","basketball","baseball","hockey",
+  "computer","internet","facebook","google","microsoft","yahoo","hotmail","gmail","twitter",
+  "january","february","march","april","may","june","july","august","september","october",
+  "november","december","monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+
+  var LEET = {"4":"a","@":"a","3":"e","1":"i","!":"i","0":"o","5":"s","$":"s","7":"t","+":"t"};
+
+  function deleet(s) {
+    var out = "";
+    var low = s.toLowerCase();
+    for (var i = 0; i < low.length; i++) {
+      out += LEET[low[i]] || low[i];
+    }
+    return out;
+  }
+
+  var KB_ROWS = [
+    "1234567890-=", "qwertyuiop[]", "asdfghjkl;'", "zxcvbnm,./",
+    "!@#$%^&*()_+", "QWERTYUIOP{}", "ASDFGHJKL:\"", "ZXCVBNM<>?"
+  ];
+
+  function isKeyboardRun(sub) {
+    var low = sub.toLowerCase();
+    var rev = low.split("").reverse().join("");
+    for (var i = 0; i < KB_ROWS.length; i++) {
+      var rowLow = KB_ROWS[i].toLowerCase();
+      if (rowLow.indexOf(low) !== -1 || rowLow.indexOf(rev) !== -1) return true;
+    }
+    return false;
+  }
+
+  function isSequenceRun(sub) {
+    var asc = true, desc = true;
+    for (var i = 1; i < sub.length; i++) {
+      var d = sub.charCodeAt(i) - sub.charCodeAt(i - 1);
+      if (d !== 1) asc = false;
+      if (d !== -1) desc = false;
+    }
+    return asc || desc;
+  }
+
+  function isRepeatRun(sub) {
+    if (/^(.)\1+$/.test(sub)) return true;
+    for (var blockLen = 1; blockLen <= 3; blockLen++) {
+      if (sub.length >= blockLen * 2 && sub.length % blockLen === 0) {
+        var block = sub.slice(0, blockLen);
+        if (block.repeat(sub.length / blockLen) === sub) return true;
+      }
+    }
+    return false;
+  }
+
+  function poolSize(pw) {
+    var n = 0;
+    if (/[a-z]/.test(pw)) n += 26;
+    if (/[A-Z]/.test(pw)) n += 26;
+    if (/[0-9]/.test(pw)) n += 10;
+    if (/[^a-zA-Z0-9]/.test(pw)) n += 33;
+    return Math.max(n, 10);
+  }
+
+  function isLetterChar(c) {
+    return c !== undefined && /[a-zA-Z]/.test(c);
+  }
+
+  function findDictMatchAt(pw, i) {
+    // Exige límite de palabra (no permite que el match empiece o termine a
+    // mitad de otra palabra) para evitar falsos positivos como "rosa"
+    // dentro de "perroSalta".
+    var lower = pw.toLowerCase();
+    var deleeted = deleet(pw);
+    var best = null;
+    function tryList(list, isCommon) {
+      for (var k = 0; k < list.length; k++) {
+        var word = list[k];
+        var wl = word.length;
+        if (wl < 3) continue;
+        var matchesHere = lower.slice(i, i + wl) === word || deleeted.slice(i, i + wl) === word;
+        if (!matchesHere) continue;
+        if (isLetterChar(pw[i - 1]) || isLetterChar(pw[i + wl])) continue;
+        if (!best || wl > best.len) best = { len: wl, isCommon: isCommon, rankIndex: k };
+      }
+    }
+    tryList(COMMON, true);
+    tryList(DICT, false);
+    return best;
+  }
+
+  function tokenize(pw) {
+    var tokens = [];
+    var i = 0;
+    while (i < pw.length) {
+      var matched = null;
+      var dict = findDictMatchAt(pw, i);
+      if (dict) matched = { type: dict.isCommon ? "common" : "dict", len: dict.len, meta: dict };
+
+      var maxLen = Math.min(pw.length - i, 12);
+      var len;
+      for (len = maxLen; len >= 3; len--) {
+        if (isRepeatRun(pw.slice(i, i + len))) { if (!matched || len > matched.len) matched = { type: "repeat", len: len }; break; }
+      }
+      for (len = maxLen; len >= 3; len--) {
+        if (isKeyboardRun(pw.slice(i, i + len))) { if (!matched || len > matched.len) matched = { type: "keyboard", len: len }; break; }
+      }
+      for (len = maxLen; len >= 3; len--) {
+        if (isSequenceRun(pw.slice(i, i + len))) { if (!matched || len > matched.len) matched = { type: "sequence", len: len }; break; }
+      }
+
+      if (matched) {
+        tokens.push({ type: matched.type, len: matched.len, text: pw.slice(i, i + matched.len), meta: matched.meta });
+        i += matched.len;
+      } else {
+        tokens.push({ type: "random", len: 1, text: pw[i] });
+        i += 1;
+      }
+    }
+    return tokens;
+  }
+
+  function singleCharPool(ch) {
+    if (/[a-z]/.test(ch)) return 26;
+    if (/[A-Z]/.test(ch)) return 26;
+    if (/[0-9]/.test(ch)) return 10;
+    return 33;
+  }
+
+  function scorePassword(pw) {
+    var tokens = tokenize(pw);
+    var pool = poolSize(pw);
+    var hasDictToken = tokens.some(function (t) { return t.type === "common" || t.type === "dict"; });
+    var log10Total = 0;
+    var flagSet = {};
+
+    tokens.forEach(function (t) {
+      var g;
+      if (t.type === "common") {
+        g = Math.max(t.meta.rankIndex + 1, 1);
+        flagSet.comun = true;
+      } else if (t.type === "dict") {
+        g = 10000;
+        flagSet.diccionario = true;
+        if (deleet(t.text) !== t.text.toLowerCase()) { flagSet.leet = true; g *= 10; }
+        if (t.text.toLowerCase() !== t.text) { g *= 2; }
+      } else if (t.type === "keyboard") {
+        g = 10 * t.len; flagSet.teclado = true;
+      } else if (t.type === "sequence") {
+        g = 4 * t.len; flagSet.secuencia = true;
+      } else if (t.type === "repeat") {
+        g = 15; flagSet.repetido = true;
+      } else {
+        // Si ya hay una palabra reconocible en la contraseña, un atacante
+        // probaría justo ese patrón (palabra + sufijo) con un ataque
+        // híbrido, así que el resto se evalúa según el tipo real de cada
+        // carácter. Si no hay ninguna palabra detectada, se asume fuerza
+        // bruta a ciegas sobre todo el conjunto de caracteres usado.
+        g = hasDictToken ? singleCharPool(t.text) : pool;
+      }
+      log10Total += Math.log10(Math.max(g, 1));
+    });
+
+    if (pw.length > 0 && pw.length < 10) flagSet.corta = true;
+    var classes = 0;
+    if (/[a-z]/.test(pw)) classes++;
+    if (/[A-Z]/.test(pw)) classes++;
+    if (/[0-9]/.test(pw)) classes++;
+    if (/[^a-zA-Z0-9]/.test(pw)) classes++;
+    if (pw.length > 0 && classes <= 1) flagSet.pocavariedad = true;
+
+    return { log10: log10Total, flags: Object.keys(flagSet), tokens: tokens };
+  }
+
+  var YEAR = 31557600;
+  var UNIVERSE_YEARS = 13800000000;
+
+  function formatSeconds(seconds) {
+    if (seconds < 1) return "menos de 1 segundo";
+    var years = seconds / YEAR;
+    if (years >= UNIVERSE_YEARS) return "más de lo que tiene de edad el universo";
+    if (seconds < 60) return round1(seconds) + " segundo" + plural(seconds);
+    if (seconds < 3600) return round1(seconds / 60) + " minuto" + plural(seconds / 60);
+    if (seconds < 86400) return round1(seconds / 3600) + " hora" + plural(seconds / 3600);
+    if (seconds < 2629800) return round1(seconds / 86400) + " día" + plural(seconds / 86400);
+    if (seconds < YEAR) return round1(seconds / 2629800) + " mes" + plural(seconds / 2629800, "es");
+    if (years < 1000) return round1(years) + " año" + plural(years);
+    if (years < 1000000) return formatInt(years) + " años";
+    if (years < 1000000000) return formatInt(years / 1000000) + " millones de años";
+    return formatInt(years / 1000000000) + " mil millones de años";
+  }
+  function round1(n) { return n < 10 ? (Math.round(n * 10) / 10).toString().replace(".", ",") : Math.round(n).toString(); }
+  function formatInt(n) { return Math.round(n).toLocaleString("es-BO"); }
+  function plural(n, suf) { suf = suf || "s"; return (Math.round(n * 10) / 10) === 1 ? "" : suf; }
+
+  var SCENARIOS = [
+    { key: "online_libre", label: "En línea, sin límite de intentos", sub: "ataque directo contra un formulario sin protección (≈100 intentos/seg)", rate: 100, icon: "globe" },
+    { key: "online_protegido", label: "En línea, con bloqueo de intentos", sub: "el sitio limita o frena los intentos fallidos (≈100/día)", rate: 100 / 86400, icon: "shield" },
+    { key: "offline_rapido", label: "Base de datos filtrada, hash rápido", sub: "una GPU de gama alta, tipo MD5/NTLM sin sal", rate: 2.4e11, icon: "server" },
+    { key: "offline_bcrypt", label: "Base de datos filtrada, hash robusto", sub: "bcrypt con buenas prácticas de almacenamiento", rate: 138675, icon: "lock" }
+  ];
+
+  var ICONS = {
+    globe: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg>',
+    shield: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5Z"/></svg>',
+    server: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="7" rx="1.5"/><rect x="2" y="14" width="20" height="7" rx="1.5"/><line x1="6" y1="6.5" x2="6" y2="6.5"/><line x1="6" y1="17.5" x2="6" y2="17.5"/></svg>',
+    lock: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>'
+  };
+
+  var FLAG_TEXT = {
+    comun: "Está entre las contraseñas más usadas del mundo",
+    diccionario: "Contiene una palabra común de diccionario",
+    leet: "Cambiar letras por números (a→4, e→3) no la protege: el software de cracking ya prueba esas variantes",
+    teclado: "Tiene una secuencia de teclado, como qwerty o asdf",
+    secuencia: "Tiene una secuencia obvia, como abcd o 4321",
+    repetido: "Tiene caracteres repetidos de forma predecible",
+    corta: "Es más corta de lo recomendable (menos de 10 caracteres)",
+    pocavariedad: "Usa un solo tipo de carácter"
+  };
+
+  var METER_LABELS = ["", "Muy débil", "Débil", "Aceptable", "Fuerte", "Muy fuerte"];
+  var METER_COLORS = ["", "var(--sev-1)", "var(--sev-2)", "var(--sev-3)", "var(--sev-4)", "var(--sev-5)"];
+
+  function categoryFromSeconds(seconds, hasBadFlag) {
+    if (hasBadFlag) return 1;
+    if (seconds < 1) return 1;
+    if (seconds < 3600) return 2;
+    if (seconds < 2629800) return 3;
+    if (seconds < YEAR * 10) return 4;
+    return 5;
+  }
+
+  var pwInput = document.getElementById("pw");
+  var toggleBtn = document.getElementById("toggle-visibility");
+  var eyeIcon = document.getElementById("eye-icon");
+  var exampleNote = document.getElementById("example-note");
+  var generateBtn = document.getElementById("generate-btn");
+  var meterLabel = document.getElementById("meter-label");
+  var bitsCaption = document.getElementById("bits-caption");
+  var chipsEl = document.getElementById("chips");
+  var scenarioListEl = document.getElementById("scenario-list");
+  var segs = Array.prototype.slice.call(document.querySelectorAll(".meter-seg"));
+
+  var userHasTyped = false;
+
+  function render() {
+    var pw = pwInput.value;
+    if (pw.length === 0) {
+      meterLabel.textContent = "Escribe una contraseña para analizarla";
+      bitsCaption.textContent = "";
+      segs.forEach(function (s) { s.style.background = "var(--surface-2)"; });
+      chipsEl.innerHTML = "";
+      scenarioListEl.innerHTML = "";
+      return;
+    }
+
+    var result = scorePassword(pw);
+    var bits = result.log10 * Math.log2(10);
+
+    var scenarioHtml = "";
+    var badFlag = result.flags.indexOf("comun") !== -1 || result.flags.indexOf("diccionario") !== -1;
+    var refSeconds = null;
+
+    SCENARIOS.forEach(function (sc) {
+      var log10Seconds = result.log10 - Math.log10(sc.rate);
+      var seconds = Math.pow(10, Math.min(log10Seconds, 300));
+      if (sc.key === "offline_rapido") refSeconds = seconds;
+      scenarioHtml +=
+        '<div class="scenario-row">' +
+          '<div class="scenario-icon">' + ICONS[sc.icon] + '</div>' +
+          '<div class="scenario-text">' +
+            '<div class="scenario-label">' + sc.label + '</div>' +
+            '<div class="scenario-sub">' + sc.sub + '</div>' +
+          '</div>' +
+          '<div class="readout-value">' + formatSeconds(seconds) + '</div>' +
+        '</div>';
+    });
+    scenarioListEl.innerHTML = scenarioHtml;
+
+    var category = categoryFromSeconds(refSeconds, badFlag);
+    meterLabel.textContent = METER_LABELS[category];
+    meterLabel.style.color = METER_COLORS[category];
+    bitsCaption.textContent = "~" + Math.round(bits) + " bits estimados";
+    segs.forEach(function (s, idx) {
+      s.style.background = (idx < category) ? METER_COLORS[category] : "var(--surface-2)";
+    });
+
+    if (result.flags.length === 0) {
+      chipsEl.innerHTML = '<span class="chip good"><span class="dot"></span>No se detectaron patrones débiles conocidos</span>';
+    } else {
+      chipsEl.innerHTML = result.flags.map(function (f) {
+        return '<span class="chip"><span class="dot"></span>' + FLAG_TEXT[f] + '</span>';
+      }).join("");
+    }
+  }
+
+  pwInput.addEventListener("input", function () {
+    if (!userHasTyped) {
+      userHasTyped = true;
+      exampleNote.style.display = "none";
+    }
+    render();
+  });
+
+  toggleBtn.addEventListener("click", function () {
+    var show = pwInput.type === "password";
+    pwInput.type = show ? "text" : "password";
+    toggleBtn.setAttribute("aria-label", show ? "Ocultar contraseña" : "Mostrar contraseña");
+    toggleBtn.setAttribute("aria-pressed", show ? "true" : "false");
+    eyeIcon.innerHTML = show
+      ? '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a20.6 20.6 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+      : '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/>';
+  });
+
+  var GEN_WORDS = ["rio","condor","valle","cielo","piedra","viento","semilla","cobre","estrella",
+    "puente","sendero","laguna","altiplano","quebrada","nevado","horizonte","raiz","cosecha"];
+
+  function secureInt(max) {
+    var arr = new Uint32Array(1);
+    crypto.getRandomValues(arr);
+    return arr[0] % max;
+  }
+
+  function generatePassword() {
+    var w1 = GEN_WORDS[secureInt(GEN_WORDS.length)];
+    var w2 = GEN_WORDS[secureInt(GEN_WORDS.length)];
+    var symbols = "!@#%*-_+=?";
+    var sym = symbols[secureInt(symbols.length)];
+    var num = secureInt(9000) + 1000;
+    var cap = function (w) { return w.charAt(0).toUpperCase() + w.slice(1); };
+    return cap(w1) + sym + cap(w2) + num;
+  }
+
+  generateBtn.addEventListener("click", function () {
+    var pw = generatePassword();
+    pwInput.type = "text";
+    pwInput.value = pw;
+    eyeIcon.innerHTML = '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.6 20.6 0 0 1 5.06-5.94M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a20.6 20.6 0 0 1-3.22 4.44M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+    userHasTyped = true;
+    exampleNote.style.display = "none";
+    render();
+    try {
+      navigator.clipboard.writeText(pw);
+      generateBtn.textContent = "";
+      var check = document.createElement("span");
+      check.textContent = "Copiada al portapapeles";
+      generateBtn.appendChild(check);
+      setTimeout(function () {
+        generateBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg> Generar otra';
+      }, 1800);
+    } catch (e) {
+      pwInput.select();
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
