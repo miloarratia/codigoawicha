@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Real o trampa? — Código Awicha</title>
+<meta name="description" content="Juego de seguridad digital: 6 mensajes, ¿reales o trampa? Un juego de Código Awicha.">
+<link rel="icon" type="image/png" href="assets/iso-color.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .ca-topbar{background:var(--ink);color:#cdc7da;font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:.06em;padding:11px 0}
+  .ca-topbar .in{max-width:760px;margin:0 auto;padding:0 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .ca-topbar b{color:var(--gold);font-weight:700}
+  .ca-nav{border-bottom:1px solid var(--line);background:var(--card)}
+  .ca-nav .in{max-width:760px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .ca-nav .logo img{height:40px;width:auto;display:block}
+  .ca-menu{display:flex;gap:20px;list-style:none;font-size:13px;font-weight:600;flex-wrap:wrap;margin:0;padding:0}
+  .ca-menu a{text-decoration:none;color:var(--soft);transition:color .2s}
+  .ca-menu a:hover{color:var(--magenta)}
+  .ca-eyebrow{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:.1em;color:var(--teal);font-weight:700;margin-bottom:10px}
+  .ca-footer{background:var(--ink);color:#cdc7da;padding:34px 0;margin-top:10px}
+  .ca-footer .in{max-width:760px;margin:0 auto;padding:0 18px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  .ca-footer .fLogo img{height:52px;width:auto;margin-bottom:8px}
+  .ca-footer p{color:#a79fc0;font-size:13px}
+  .ca-footer .social{display:flex;gap:16px;font-size:13px}
+  .ca-footer .social a{color:var(--gold);text-decoration:none;font-weight:600}
+</style>
+<style>
+  :root{
+    --bg:#FBF7F0; --ink:#1F1B2E; --soft:#5E5870; --card:#FFFFFF; --line:#E6DED2;
+    --magenta:#B8235A; --gold:#E9A21B; --teal:#1E7F7A; --real:#2E7D32; --trampa:#C2410C;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  .franja{height:10px;background:repeating-linear-gradient(90deg,var(--magenta) 0 40px,var(--gold) 40px 56px,var(--teal) 56px 96px,var(--ink) 96px 104px,var(--gold) 104px 120px)}
+  main{max-width:760px;margin:0 auto;padding:24px 18px 40px}
+  .marca{font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:600}
+  h1{font-size:clamp(2rem,6vw,3.4rem);margin:.2em 0 .1em;line-height:1.05}
+  h1 span{color:var(--magenta)}
+  .sub{font-size:clamp(1rem,2.6vw,1.25rem);color:var(--soft);margin:0 0 1.4em}
+  .btn{appearance:none;border:0;border-radius:14px;padding:16px 26px;font-size:clamp(1.05rem,2.6vw,1.3rem);font-weight:700;cursor:pointer;transition:transform .08s ease,opacity .2s}
+  .btn:active{transform:scale(.97)}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+  .primario{background:var(--ink);color:#fff}
+  .nota{font-size:.85rem;color:var(--soft);margin-top:2em;line-height:1.45}
+  .barra{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-weight:600;color:var(--soft)}
+  .puntos{display:flex;gap:6px}
+  .puntos i{width:12px;height:12px;border-radius:50%;background:var(--line);display:block}
+  .puntos i.ok{background:var(--real)} .puntos i.mal{background:var(--trampa)} .puntos i.act{background:var(--gold)}
+  .contexto{font-size:clamp(.95rem,2.3vw,1.1rem);color:var(--soft);margin:0 0 12px;font-style:italic}
+  /* Correo */
+  .correo{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(31,27,46,.07)}
+  .correo .cab{padding:14px 18px;border-bottom:1px solid var(--line);font-size:clamp(.9rem,2.2vw,1.05rem);line-height:1.55}
+  .correo .cab b{color:var(--soft);font-weight:600;display:inline-block;min-width:64px}
+  .correo .cuerpo{padding:20px 18px 22px;font-size:clamp(1.1rem,3vw,1.5rem);line-height:1.45}
+  .falso{display:inline-block;margin-top:14px;padding:10px 18px;border-radius:8px;background:#2563EB;color:#fff;font-size:.95rem;font-weight:600;pointer-events:none}
+  .adjunto{display:inline-flex;gap:8px;align-items:center;margin-top:14px;padding:8px 14px;border:1px solid var(--line);border-radius:8px;font-size:.95rem}
+  /* WhatsApp */
+  .chat{background:#ECE5DD;border-radius:16px;padding:16px;box-shadow:0 6px 20px rgba(31,27,46,.07)}
+  .chat .quien{font-weight:700;margin:0 0 10px;font-size:1rem}
+  .burbuja{background:#fff;border-radius:4px 14px 14px 14px;padding:14px 16px 8px;max-width:92%;font-size:clamp(1.1rem,3vw,1.5rem);line-height:1.4}
+  .burbuja small{display:block;text-align:right;color:#8a8a8a;font-size:.75rem;margin-top:4px}
+  /* Botones de voto */
+  .votos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+  .votos .btn{padding:20px 10px;font-size:clamp(1.2rem,3.5vw,1.6rem);color:#fff}
+  .b-real{background:var(--real)} .b-trampa{background:var(--trampa)}
+  .votos .btn[disabled]{opacity:.35;cursor:default}
+  .votos .btn.elegido{opacity:1;outline:4px solid var(--ink);outline-offset:2px}
+  .tecla{display:block;font-size:.7rem;font-weight:500;opacity:.8;margin-top:4px}
+  /* Revelación */
+  .revela{margin-top:20px;border-radius:16px;padding:18px 20px;background:var(--card);border-left:8px solid var(--ink);display:none;animation:entra .25s ease}
+  .revela.si{display:block}
+  .revela .veredicto{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;margin:0 0 4px}
+  .revela .resultado{font-size:1rem;color:var(--soft);margin:0 0 10px;font-weight:600}
+  .revela p.pista{font-size:clamp(1.05rem,2.6vw,1.3rem);line-height:1.45;margin:0}
+  .siguiente{margin-top:18px;width:100%}
+  @keyframes entra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* Final */
+  .marcador{font-size:clamp(3rem,10vw,5rem);font-weight:800;margin:.1em 0;color:var(--magenta)}
+  .senales{display:grid;gap:12px;margin:18px 0 22px}
+  .senal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:clamp(1rem,2.5vw,1.2rem);line-height:1.4}
+  .senal b{display:block;font-size:1.15em;margin-bottom:2px}
+  .senal:nth-child(1) b{color:var(--magenta)} .senal:nth-child(2) b{color:var(--trampa)} .senal:nth-child(3) b{color:var(--teal)}
+  .regla{background:var(--ink);color:#fff;border-radius:14px;padding:16px 18px;font-size:clamp(1.05rem,2.6vw,1.3rem);line-height:1.4;margin-bottom:22px}
+  @media (hover:none){.tecla{display:none}}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="ca-topbar"><div class="in"><span>awicha@codigo:~$ <b>dos saberes, una mirada</b></span><span>La Paz &middot; Bolivia</span></div></div>
+<nav class="ca-nav"><div class="in">
+<a href="index.html" class="logo"><img src="assets/logo-color.png" alt="Código Awicha"></a>
+<ul class="ca-menu"><li><a href="index.html">Inicio</a></li><li><a href="index.html#secciones">Secciones</a></li><li><a href="dice-mi-awicha.html">Dice mi awicha</a></li></ul>
+</div></nav>
+<div class="franja" aria-hidden="true"></div>
+<main>
+
+  <section id="inicio">
+    <div class="ca-eyebrow">// HERRAMIENTA — DICE MI AWICHA</div>
+    <div class="marca">Juego de seguridad digital</div>
+    <h1>¿Real o <span>trampa?</span></h1>
+    <p class="sub">Te van a llegar 6 mensajes. Para cada uno, decide si es real o si es un intento de engaño para robarte la cuenta.</p>
+    <button class="btn primario" id="empezar">Empezar</button>
+    <p class="nota">Los mensajes son ejemplos inventados, basados en los tipos de engaño que registró la Fundación InternetBolivia.org en intentos de vulnerar sus cuentas. Los nombres, enlaces y remitentes no son reales.</p>
+  </section>
+
+  <section id="juego" hidden>
+    <div class="barra"><span id="contador">Mensaje 1 de 6</span><span class="puntos" id="puntos"></span></div>
+    <p class="contexto" id="contexto"></p>
+    <div id="mensaje"></div>
+    <div class="votos">
+      <button class="btn b-real" id="vReal">Real<span class="tecla">tecla R</span></button>
+      <button class="btn b-trampa" id="vTrampa">Trampa<span class="tecla">tecla T</span></button>
+    </div>
+    <div class="revela" id="revela" role="status" aria-live="polite">
+      <p class="veredicto" id="veredicto"></p>
+      <p class="resultado" id="resultado"></p>
+      <p class="pista" id="pista"></p>
+      <button class="btn primario siguiente" id="siguiente">Siguiente</button>
+    </div>
+  </section>
+
+  <section id="final" hidden>
+    <div class="marca">Resultado</div>
+    <div class="marcador" id="marcador"></div>
+    <p class="sub" id="frase"></p>
+    <h2>Las tres señales de un engaño</h2>
+    <div class="senales">
+      <div class="senal"><b>Confianza</b>Fingen ser alguien conocido: un banco, una red social, un fondo, un medio o una compañera.</div>
+      <div class="senal"><b>Urgencia</b>Crean pánico: "vence hoy", "perderás tu cuenta", "es urgente".</div>
+      <div class="senal"><b>Engaño</b>Buscan que hagas clic en un enlace, llenes un formulario, descargues un archivo o entregues un código.</div>
+    </div>
+    <div class="regla">Ante la duda, no respondas desde el mensaje. Verifica por otro canal: entra directo a la app o llama a la persona.</div>
+    <button class="btn primario" id="otraVez">Jugar de nuevo</button>
+  </section>
+
+</main>
+<footer class="ca-footer"><div class="in">
+<div><div class="fLogo"><img src="assets/logo-blanco.png" alt="Código Awicha"></div><p>Detrás está Camilo Arratia Toledo &middot; La Paz, Bolivia</p></div>
+<div class="social"><a href="https://www.instagram.com/codigoawicha" target="_blank">Instagram</a><a href="https://www.tiktok.com/@codigoawicha" target="_blank">TikTok</a></div>
+</div></footer>
+
+<script>
+const MENSAJES = [
+  { tipo:"correo", respuesta:"trampa",
+    de:"Fondo Mujeres Defensoras &lt;registro@fmd-convocatorias.net&gt;",
+    asunto:"¡Felicidades! Tu colectiva fue preseleccionada",
+    cuerpo:"Tu colectiva fue preseleccionada para el Fondo Mujeres Defensoras 2027. Completa el registro <b>hoy antes de las 18:00</b> para no perder el cupo.",
+    extra:'<span class="falso">Completar registro</span>',
+    pista:"Nadie preselecciona a quien no postuló. Hay urgencia (hoy antes de las 18:00) y un enlace para \"registrarse\"." },
+  { tipo:"correo", respuesta:"trampa",
+    de:"Canva Facturación &lt;avisos@canva-pagos-online.com&gt;",
+    asunto:"Tu suscripción vence hoy",
+    cuerpo:"Tu suscripción de Canva vence hoy y <b>tus diseños se borrarán en 24 horas</b>. Actualiza tu método de pago aquí.",
+    extra:'<span class="falso">Actualizar pago</span>',
+    pista:"Amenaza con que pierdes todo y pide datos de pago. Además, el remitente no es de Canva. Esto se revisa entrando directo a la app, nunca desde el enlace." },
+  { tipo:"whatsapp", respuesta:"trampa",
+    contexto:"Te escribe una compañera que tienes agendada.",
+    quien:"Ana (colectiva)",
+    cuerpo:"Amiga, te llegó un código de 6 dígitos por error, ¿me lo pasas? Es urgente 🙏",
+    hora:"21:47",
+    pista:"Es la forma más común de robar un WhatsApp. La cuenta de tu compañera puede estar tomada. Nunca compartas un código: llámala por otro medio." },
+  { tipo:"correo", respuesta:"trampa",
+    de:"Prensa Digital &lt;entrevistas.prensa@gmail.com&gt;",
+    asunto:"Solicitud de entrevista sobre el 25N",
+    cuerpo:"Somos de un medio digital y queremos entrevistarte sobre el 25N. Para acreditarte, <b>ingresa con tu cuenta de Facebook</b> en este formulario.",
+    extra:'<span class="falso">Ingresar con Facebook</span>',
+    pista:"Un medio no necesita tu usuario ni tu contraseña. Verifica que el medio exista y escríbele por sus canales oficiales." },
+  { tipo:"correo", respuesta:"trampa",
+    de:"Registro Internacional OSC &lt;registro@osc-internacional.info&gt;",
+    asunto:"Registro OBLIGATORIO de organizaciones",
+    cuerpo:"Registro obligatorio de organizaciones de la sociedad civil. Descarga y llena el formulario adjunto.",
+    extra:'<span class="adjunto">📎 registro.zip</span>',
+    pista:"\"Obligatorio\" y un archivo comprimido para descargar. Consulta con tu red antes de abrir nada." },
+  { tipo:"correo", respuesta:"real",
+    contexto:"Acabas de entrar a tu Gmail desde la compu del taller.",
+    de:"Google &lt;no-reply@accounts.google.com&gt;",
+    asunto:"Alerta de seguridad",
+    cuerpo:"Nuevo inicio de sesión en Windows. Si fuiste tú, no necesitas hacer nada.",
+    pista:"Coincide con algo que acabas de hacer y no te pide datos ni clics. Igual, lo más seguro es revisar entrando directo a tu cuenta: Seguridad > Tus dispositivos." }
+];
+
+const $ = id => document.getElementById(id);
+let i = 0, aciertos = 0, resultados = [], respondido = false;
+
+function pintarPuntos(){
+  $("puntos").innerHTML = MENSAJES.map((_,k)=>{
+    const c = k < resultados.length ? (resultados[k] ? "ok" : "mal") : (k === i ? "act" : "");
+    return `<i class="${c}"></i>`;
+  }).join("");
+}
+
+function mostrar(){
+  const m = MENSAJES[i];
+  respondido = false;
+  $("contador").textContent = `Mensaje ${i+1} de ${MENSAJES.length}`;
+  $("contexto").textContent = m.contexto || "";
+  $("contexto").hidden = !m.contexto;
+  if (m.tipo === "whatsapp"){
+    $("mensaje").innerHTML = `<div class="chat"><p class="quien">💬 WhatsApp · ${m.quien}</p>
+      <div class="burbuja">${m.cuerpo}<small>${m.hora}</small></div></div>`;
+  } else {
+    $("mensaje").innerHTML = `<div class="correo"><div class="cab"><b>De:</b> ${m.de}<br><b>Asunto:</b> ${m.asunto}</div>
+      <div class="cuerpo">${m.cuerpo}${m.extra ? "<br>"+m.extra : ""}</div></div>`;
+  }
+  ["vReal","vTrampa"].forEach(id=>{ $(id).disabled=false; $(id).classList.remove("elegido"); });
+  $("revela").className = "revela";
+  pintarPuntos();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function votar(eleccion){
+  if (respondido) return;
+  respondido = true;
+  const m = MENSAJES[i], bien = eleccion === m.respuesta;
+  if (bien) aciertos++;
+  resultados.push(bien);
+  $(eleccion === "real" ? "vReal" : "vTrampa").classList.add("elegido");
+  ["vReal","vTrampa"].forEach(id=> $(id).disabled = true);
+  const r = $("revela");
+  r.style.borderLeftColor = m.respuesta === "real" ? "var(--real)" : "var(--trampa)";
+  $("veredicto").textContent = m.respuesta === "real" ? "Es REAL" : "Es TRAMPA";
+  $("veredicto").style.color = m.respuesta === "real" ? "var(--real)" : "var(--trampa)";
+  $("resultado").textContent = bien ? "✔ Acertaste" : "✘ Esta vez no";
+  $("pista").textContent = m.pista;
+  $("siguiente").textContent = i === MENSAJES.length-1 ? "Ver resultado" : "Siguiente";
+  r.classList.add("si");
+  pintarPuntos();
+  $("siguiente").focus({preventScroll:true});
+  setTimeout(()=> r.scrollIntoView({behavior:"smooth",block:"nearest"}), 60);
+}
+
+function siguiente(){
+  if (!respondido) return;
+  i++;
+  if (i < MENSAJES.length) { mostrar(); return; }
+  $("juego").hidden = true; $("final").hidden = false;
+  $("marcador").textContent = `${aciertos} de ${MENSAJES.length}`;
+  $("frase").textContent = aciertos === MENSAJES.length ? "¡Las reconociste todas! Ahora compártelo con tu colectiva."
+    : aciertos >= 4 ? "¡Muy bien! Repasa las señales de los mensajes que se te pasaron."
+    : "Estos engaños están hechos para confundir. Con estas señales los vas a reconocer.";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function empezar(){
+  i = 0; aciertos = 0; resultados = [];
+  $("inicio").hidden = true; $("final").hidden = true; $("juego").hidden = false;
+  mostrar();
+}
+
+$("empezar").onclick = empezar;
+$("otraVez").onclick = empezar;
+$("vReal").onclick = ()=>votar("real");
+$("vTrampa").onclick = ()=>votar("trampa");
+$("siguiente").onclick = siguiente;
+document.addEventListener("keydown", e=>{
+  if ($("juego").hidden) return;
+  const k = e.key.toLowerCase();
+  if (k === "r") votar("real");
+  else if (k === "t") votar("trampa");
+  else if ((k === "enter" || k === "arrowright" || k === " ") && respondido){ e.preventDefault(); siguiente(); }
+});
+</script>
+</body>
+</html>
